@@ -1,5 +1,12 @@
 <script>
-import { authenticated, user } from "./auth";
+import { authenticated, user, logOut, routes, APIEndpoint } from "./auth";
+fetch(`${APIEndpoint}/${routes.auth.get}`, {
+  body: {
+    id: sessionStorage.get("id")
+  }
+}).then((response) => {return response.json()}).then((data) => {
+  
+})
 </script>
 
 <div class="text-6xl border m-2 w-max mx-auto px-6">Anomia</div>
@@ -15,6 +22,7 @@ import { authenticated, user } from "./auth";
     href="/auth">Sign Up</a
   >{:else}
   <div>Hi {$user.username}</div>
+  <div on:click={logOut} class="hover:underline transition-all duration-300 ease-in-out hover:bg-white hover:text-black">Log out</div>
 {/if}
 </div>
 <div class="p-2 space-x-3 text-center mx-1 md:w-max md:mx-auto">

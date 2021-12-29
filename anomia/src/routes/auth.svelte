@@ -1,11 +1,9 @@
 <script>
   import Header from "../components/Header.svelte";
 
-  import {logIn, register, authenticated, user} from "../components/auth";
-import { goto } from "@roxi/routify";
+  import {logIn, register, authenticated} from "../components/auth";
 
   let isAuth = $authenticated
-  if(isAuth) goto('./index')
   let username;
   let password;
   

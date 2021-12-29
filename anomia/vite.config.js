@@ -3,7 +3,7 @@ import routify from '@roxi/routify/vite-plugin'
 import { defineConfig } from 'vite'
 import { mdsvex } from 'mdsvex'
 
-const production = process.env.NODE_ENV === 'production'
+const production = true
 
 export default defineConfig({
     clearScreen: false,

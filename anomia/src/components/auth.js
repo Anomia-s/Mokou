@@ -1,37 +1,51 @@
 import {
     writable
 } from "svelte/store";
-import { goto } from "@roxi/routify";
 
-export let user = writable({})
-export let authenticated = writable(false)
-const APIEndpoint = "http://127.0.0.1:3333"
+export const user = writable({})
+export const authenticated = writable(false)
+export const APIEndpoint = "http://127.0.0.1:3333"
 
-const routes = {
+export const routes = {
     auth: {
 
         login: "auth/login",
-        register: "auth/register"
+        register: "auth/register",
+        check: "auth/check",
 
     }
 }
 
 let isAuth;
 
+const token = sessionStorage.getItem('token')
+const userData = sessionStorage.getItem('user')
+
+user.set(userData)
+
+if (token) {
+    authenticated.set(true)
+}
 user.subscribe((value) => {
-    sessionStorage.setItem('token', value.token)
+    sessionStorage.setItem('user', `{"id": ${value.id}}`)
     console.log("💻 user state changed.")
+    console.log(value)
 })
 authenticated.subscribe((variable) => {
     console.log(variable)
     isAuth = variable
     console.log("💻 Authenticated state changed.")
 })
-export function auth() {
 
+
+export function logOut() {
+    console.log('Logigng out.')
+    user.set({})
+    authenticated.set(false)
+    sessionStorage.removeItem('token')
 }
-
 export function register(username, password) {
+    console.log('Starting registration')
     if (isAuth) {
         return false;
     }
@@ -60,10 +74,14 @@ export function register(username, password) {
 
 }
 
+
 export function logIn(username, password) {
+    console.log('Starting logging')
     if (isAuth) {
+        console.log('User is logged in fuck you')
         return false;
-    }
+    } 
+    console.log('User is not logged in..')
     fetch(`${APIEndpoint}/${routes.auth.login}`, {
         headers: {
             Accept: 'application/json',
@@ -75,16 +93,16 @@ export function logIn(username, password) {
             password
         })
     }).then(response => {
+        console.log('response obtained, parsing...')
         return response.json()
     }).then((data) => {
         console.log('💻 Authenticated, setting token...')
         authenticated.set(true)
+        console.log('logging complete')
         user.set({
-            username: username,
-            token: data.token.token
+            data
         })
 
         sessionStorage.setItem('token', data.token.token)
-        goto('./index')
     })
 }

@@ -4,7 +4,7 @@ import {
 
 export const user = writable({})
 export const authenticated = writable(false)
-export const APIEndpoint = "http://127.0.0.1:3333"
+export const APIEndpoint = "http://127.0.0.1:80"
 
 export const routes = {
     auth: {
@@ -27,7 +27,7 @@ if (token) {
     authenticated.set(true)
 }
 user.subscribe((value) => {
-    sessionStorage.setItem('user', `{"id": ${value.id}}`)
+    //sessionStorage.setItem('user', `{"id": ${value.id}}`)
     console.log("💻 user state changed.")
     console.log(value)
 })

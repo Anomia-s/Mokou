@@ -2,8 +2,9 @@
 import { authenticated, user, logOut, routes, APIEndpoint } from "./auth";
 fetch(`${APIEndpoint}/${routes.auth.get}`, {
   body: {
-    id: sessionStorage.get("id")
-  }
+    id: sessionStorage.getItem("id")
+  },
+  method: "POST",
 }).then((response) => {return response.json()}).then((data) => {
   
 })
